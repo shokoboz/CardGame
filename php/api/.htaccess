@@ -1,0 +1,10 @@
+Options -Indexes
+
+<Files ~ "\.(env|config.js|md|gitignore|gitattributes|lock)$">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files subdirectory/*>
+    deny from all
+</Files>

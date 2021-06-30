@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+    game-app:
+        build: ./game
+        container_name: game-app
+        restart: always
+        ports:
+            - "3000:3000"
+        command: "npm run start"
+        volumes: 
+            - ./game:/home/app/gamecard
+        networks:
+            - nuxt-network
+    mongo:
+        container_name: mongo
+        image: mongo
+        restart: "no"
+        ports:
+            - "27017:27017"      
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: 1234
+        networks:
+            - nuxt-network
+    php:
+        container_name: php
+        # image: php:7-fpm-alpine
+        build: ./php
+        restart: always
+        ports: 
+            - ":9000"
+        volumes:
+            - ./php/api/:/var/www/html/api/
+        links: 
+            - mongo
+        networks: 
+            - nuxt-network
+    # composer:
+    #     image: composer/composer
+    #     command: install
+    web-api:
+        image: nginx:alpine
+        container_name: web-api
+        volumes: 
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "80:80"
+        depends_on: 
+            - php
+            - game-app
+        links: 
+            - php
+        networks: 
+            - nuxt-network
+        # restart: unless-stopped
+networks:
+  nuxt-network:
+    driver: bridge
+      
