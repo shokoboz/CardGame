@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="input-box" style="width: 30%;">
+    <div class="input-box">
       <input type="text" v-model="name" @keydown.enter="onPlay">
       <button class="btn btn-play" @click="onPlay" :disabled="!canPlay">
         JOIN GAME
@@ -54,6 +54,7 @@ export default {
 }
 .input-box {
   display: grid;
+  width: 30%;
   * {
     margin-bottom: 10px;
   }
@@ -63,6 +64,11 @@ export default {
     outline: none;
     padding: 10px;
     font-size: 20px;
+  }
+}
+@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  .input-box {
+    width: 80%;
   }
 }
 </style>

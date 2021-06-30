@@ -4,15 +4,13 @@
     use Firebase\JWT\JWT;
 
     class User {
-        private static $key = "hX3b9HyfhhDcuTyuBokW/q8JAzwUlrxxGwEdHev0e";
-        private static $serverName = "local.cardgame.com";
         public static function getUser($name = null){
             
         }
 
         public static function generateToken($name){
-            $key = self::$key;
-            $serverName = self::$serverName;
+            $key = $GLOBALS["jwt_key"];
+            $serverName = $GLOBALS["jwt_server_name"];
 
             $issuedAt = new DateTimeImmutable();
             # TOKEN 24 Hour
@@ -43,8 +41,8 @@
                     header('HTTP/1.0 400 Bad Request');
                     exit;
                 }
-                $key = self::$key;
-                $serverName = self::$serverName;
+                $key = $GLOBALS["jwt_key"];
+                $serverName = $GLOBALS["jwt_server_name"];
                 $now = new DateTimeImmutable();
 
                 $token = JWT::decode($jwt, $key, array('HS256'));

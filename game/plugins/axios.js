@@ -1,7 +1,9 @@
 export default function ({ $axios, redirect }) {
   $axios.onRequest((config) => {
     // eslint-disable-next-line no-console
-    console.log('REQUEST URL TO ' + config.url)
+    if(process.env.NODE_ENV == 'development'){
+      console.log('REQUEST URL TO ' + config.url)
+    }
   })
 
   $axios.onError((error) => {

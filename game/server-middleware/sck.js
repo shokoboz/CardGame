@@ -15,7 +15,7 @@ app.all('/init', (req, res) => {
     })
 
     io.on('connection', function (socket) {
-      console.log('user connection')
+      console.log('client connection')
       socket.emit('connected-callback', true) 
 
       socket.on('update-global', () => {

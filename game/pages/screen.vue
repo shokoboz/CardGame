@@ -170,9 +170,7 @@ export default {
       this.user.best_score = this.$store.state.auth.user.best_score || 0
       this.$axios.$get('/ws/init').then(() => {
         this.socket = io()
-        this.socket.on('connected-callback', (data) => {
-          console.log('CONNECT TO SERVER CENTRAL')
-        })
+        this.socket.on('connected-callback', (data) => {})
         this.socket.on('global-score', () => {
           this.loadGlobal()
         })

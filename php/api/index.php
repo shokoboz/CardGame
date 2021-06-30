@@ -1,12 +1,13 @@
 <?php
     header('Access-Control-Allow-Origin: localhost');
+    require_once __DIR__ . '/.env.php';
     require_once __DIR__ . '/_.includes.php';
     require_once __DIR__ . '/classes/Database.php';
     require_once __DIR__ . '/classes/User.php';
 
 
-    $connection = new Database('root', '1234');
-    $cardgame = $connection->getDatabase('cardgame');
+    $connection = new Database($GLOBALS["mongo_user"], $GLOBALS["mongo_pass"]);
+    $cardgame = $connection->getDatabase($GLOBALS["mongo_db"]);
 
   
     if (Boo::Route('join')){
@@ -125,6 +126,7 @@
                 }
             } else if(Boo::Route('save-game')){
                 $score = $payload->score;
+                $save_time = date('Y-m-d H:i:s');
                 # UPDATE BASE SCORE
                 $updateResult = $users->updateOne(
                     [ 
@@ -136,13 +138,14 @@
                         ]
                     ],
                     [ '$set' => [
-                        "best_score" => $score
+                        "best_score" => $score,
+                        'updated_time' => date('Y-m-d H:i:s') 
                     ]]
                 );
                 User::saveHistory($cardgame, [
                     'name'       => $name,
                     'score'      => $score,
-                    'last_login' => date('Y-m-d H:i:s') 
+                    'created_time' => date('Y-m-d H:i:s') 
                 ]);
                 if($updateResult->getMatchedCount()){
                     Boo::rawResponse([

@@ -12,4 +12,3 @@ RUN apk update &&\
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer require mongodb/mongodb
-RUN composer require vlucas/phpdotenv
